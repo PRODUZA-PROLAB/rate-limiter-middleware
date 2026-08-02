@@ -1,0 +1,45 @@
+{
+  "name": "rate-limiter-middleware",
+  "version": "1.0.0",
+  "description": "Configurable Express rate-limiting middleware with fixed-window and sliding-window algorithms, in-memory storage, and rate-limit / retry-after headers.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test test/",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "keywords": [
+    "rate-limit",
+    "rate-limiting",
+    "middleware",
+    "express",
+    "fixed-window",
+    "sliding-window",
+    "memory-store",
+    "retry-after",
+    "typescript"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "@types/node": "20.14.2",
+    "typescript": "5.5.2"
+  }
+}
