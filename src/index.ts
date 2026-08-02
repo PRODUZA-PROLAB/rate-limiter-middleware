@@ -1,3 +1,12 @@
+/**
+ * Public entry point for the rate-limiter middleware package.
+ *
+ * Re-exports the middleware factories, stores, errors, header helpers and
+ * all public types.
+ *
+ * @module rate-limiter-middleware
+ */
+
 export { RateLimiter, type CheckResult } from './rate-limiter.js';
 export { fixedWindow } from './fixed-window.js';
 export { slidingWindow } from './sliding-window.js';

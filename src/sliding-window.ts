@@ -1,3 +1,9 @@
+/**
+ * Sliding-window rate limiting middleware for Express.
+ *
+ * @module sliding-window
+ */
+
 import type { NextFunction, Request, Response } from 'express';
 import { RateLimitError } from './errors.js';
 import { resolveHeaderFlags, retryAfterSeconds, setHeaders } from './headers.js';
@@ -13,6 +19,18 @@ import type {
 const defaultKeyGenerator: KeyGenerator = (req) =>
   req.ip ?? req.socket?.remoteAddress ?? 'unknown';
 
+/**
+ * Creates a sliding-window rate limiting middleware.
+ *
+ * Instead of fixed buckets, each request is timestamped and a rolling count
+ * is computed over the last `windowMs`. Requests older than the window no
+ * longer count, so capacity is freed progressively rather than all at once.
+ *
+ * @param {RateLimitConfig} config - Rate limiting configuration.
+ * @returns {import('express').RequestHandler} An Express middleware function.
+ * @throws {RateLimitError} Via `next` when the configured limit is exceeded
+ *   and no custom `handler` is provided.
+ */
 export function slidingWindow(config: RateLimitConfig) {
   const windowMs = config.windowMs;
   const limit = config.limit;

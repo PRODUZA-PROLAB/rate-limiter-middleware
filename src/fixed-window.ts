@@ -1,3 +1,9 @@
+/**
+ * Fixed-window rate limiting middleware for Express.
+ *
+ * @module fixed-window
+ */
+
 import type { NextFunction, Request, Response } from 'express';
 import { RateLimitError } from './errors.js';
 import { resolveHeaderFlags, retryAfterSeconds, setHeaders } from './headers.js';
@@ -13,6 +19,18 @@ import type {
 const defaultKeyGenerator: KeyGenerator = (req) =>
   req.ip ?? req.socket?.remoteAddress ?? 'unknown';
 
+/**
+ * Creates a fixed-window rate limiting middleware.
+ *
+ * Requests are bucketed into fixed windows of `windowMs`; once the counter
+ * for a window exceeds `limit`, subsequent requests are rejected with a
+ * {@link RateLimitError} until the window resets.
+ *
+ * @param {RateLimitConfig} config - Rate limiting configuration.
+ * @returns {import('express').RequestHandler} An Express middleware function.
+ * @throws {RateLimitError} Via `next` when the configured limit is exceeded
+ *   and no custom `handler` is provided.
+ */
 export function fixedWindow(config: RateLimitConfig) {
   const windowMs = config.windowMs;
   const limit = config.limit;
